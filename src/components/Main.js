@@ -1,49 +1,48 @@
 import React from 'react';
+import { useContext } from 'react';
 import profileAvatarEdit from '../images/Vector_btn_edit_320.svg';
-import { api } from '../utils/Api';
-import { useState, useEffect } from 'react';
 import Card from './Card';
+import { CurrentUserContext } from '../context/CurrentUserContext';
 
-function Main(props) {
-  const [userName, setUserName] = useState('');
-  const [userDescription, setUserDescription] = useState('');
-  const [userAvatar, setUserAvatar] = useState('');
-  const [cards, setCards] = useState([]);
-
-  useEffect(() => {
-    Promise.all([api.getAllCards(), api.getUser()])
-      .then(([cards, userData]) => {
-        setUserName(userData.name);
-        setUserDescription(userData.about);
-        setUserAvatar(userData.avatar);
-        setCards(cards);
-      })
-      .catch((err) => console.log(err));
-  }, []);
+function Main({
+  cards,
+  onCardClick,
+  onCardLike,
+  onDeleteCard,
+  onEditProfile,
+  onEditAvatar,
+  onAddPlace,
+}) {
+  const currentUser = useContext(CurrentUserContext);
 
   return (
     <main className="main">
       <section className="profile">
-        <div onClick={props.onEditAvatar} className="profile__avatar-wrapper">
+        <div onClick={onEditAvatar} className="profile__avatar-wrapper">
           <img
             className="profile__avatar-edit"
             src={profileAvatarEdit}
             alt="иконка карандаша"
           />
-          <img className="profile__avatar" src={userAvatar} alt="фото" />
+          <img
+            className="profile__avatar"
+            src={currentUser.avatar}
+            alt="фото"
+            style={{ backgroundImage: `url(${currentUser.avatar})` }}
+          />
         </div>
         <div className="profile__container">
-          <h1 className="profile__name">{userName}</h1>
+          <h1 className="profile__name">{currentUser.name}</h1>
           <button
-            onClick={props.onEditProfile}
+            onClick={onEditProfile}
             className="profile__btn-edit"
             type="button"
             aria-label="изменить"
           />
-          <p className="profile__info">{userDescription}</p>
+          <p className="profile__info">{currentUser.about}</p>
         </div>
         <button
-          onClick={props.onAddPlace}
+          onClick={onAddPlace}
           className="profile__btn-add"
           type="button"
           aria-label="добавить"
@@ -51,18 +50,22 @@ function Main(props) {
       </section>
 
       <section className="cards">
-        <ul className="cards__list">
-          {cards.map((card) => (
-            <Card
-              key={card._id}
-              title={card.name}
-              likes={card.likes.length}
-              src={card.link}
-              card={card}
-              onCardClick={props.onCardClick}
-            />
-          ))}
-        </ul>
+        {
+          <ul className="cards__list">
+            {cards.map((card) => (
+              <Card
+                key={card._id}
+                title={card.name}
+                likes={card.likes.length}
+                src={card.link}
+                card={card}
+                onCardClick={onCardClick}
+                onCardLike={onCardLike}
+                onDeleteCard={onDeleteCard}
+              />
+            ))}
+          </ul>
+        }
       </section>
     </main>
   );
