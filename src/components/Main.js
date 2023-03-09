@@ -8,10 +8,10 @@ function Main({
   cards,
   onCardClick,
   onCardLike,
-  onDeleteCard,
   onEditProfile,
   onEditAvatar,
   onAddPlace,
+  onDeleteBtn,
 }) {
   const currentUser = useContext(CurrentUserContext);
 
@@ -61,7 +61,7 @@ function Main({
                 card={card}
                 onCardClick={onCardClick}
                 onCardLike={onCardLike}
-                onDeleteCard={onDeleteCard}
+                onDeleteBtn={onDeleteBtn}
               />
             ))}
           </ul>

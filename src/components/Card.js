@@ -11,6 +11,7 @@ function Card({
   onCardClick,
   onCardLike,
   onDeleteCard,
+  onDeleteBtn,
 }) {
   const currentUser = useContext(CurrentUserContext);
   const isOwn = card.owner._id === currentUser._id;
@@ -25,8 +26,12 @@ function Card({
     onCardLike(card);
   }
 
-  function handleDeleteCard() {
+  /*function handleDeleteCard() {
     onDeleteCard(card);
+  }*/
+
+  function handleDeleteCardByBtn() {
+    onDeleteBtn(card);
   }
 
   return (
@@ -36,7 +41,7 @@ function Card({
           className="card__trash"
           type="button"
           aria-label="удалить"
-          onClick={handleDeleteCard}
+          onClick={handleDeleteCardByBtn}
         />
       )}
       <img

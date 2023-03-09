@@ -8,6 +8,7 @@ function PopupWithForm({
   buttonText,
   onClose,
   onSubmit,
+  isLoading,
 }) {
   return (
     <div
@@ -18,7 +19,7 @@ function PopupWithForm({
           <h3 className="popup__title">{title}</h3>
           <fieldset className="popup__input-box">{children}</fieldset>
           <button className="popup__btn" type="submit">
-            {buttonText}
+            {isLoading ? 'Сохранение...' : buttonText}
           </button>
         </form>
         <button
